@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model UserMaster {
+  id                   Int                  @id @default(autoincrement())
+  name                 String
+  mobileNo             String?              @unique
+  email                String               @unique
+  firmName             String?
+  businessType         Int                  @default(0)
+  address              String?
+  city                 String?
+  state                String?
+  latLong              String?
+  passwordHash         String
+  previousPasswordHash String?
+  profileImage         String?
+  businessImage        String?
+  slug                 String               @unique // ✅ Must exist and be unique
+  referralCode         String?              @unique
+  referredBy           String?
+  subscriptionPlan     String               @default("free")
+  isActive             Boolean              @default(true)
+  lastLoginAt          DateTime?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  resetTokens          PasswordResetToken[]
+  products             Product[]
+}
+
+model PasswordResetToken {
+  id        Int        @id @default(autoincrement())
+  token     String     @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime   @default(now())
+  user      UserMaster @relation(fields: [userId], references: [id])
+}
+
+model Product {
+  id          Int        @id @default(autoincrement())
+  name        String
+  price       Float
+  image       String
+  category    String
+  description String?
+  createdAt   DateTime   @default(now())
+  ownerId     Int
+  owner       UserMaster @relation(fields: [ownerId], references: [id])
+}
