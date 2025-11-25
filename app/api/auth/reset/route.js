@@ -1,5 +1,5 @@
 // app/api/auth/reset/route.js
-import { hashPassword } from "@/lib/auth";
+import { hashPassword } from "../../../../lib/auth";
 import { prisma } from "../../../../lib/prisma";
 
 export async function POST(req) {

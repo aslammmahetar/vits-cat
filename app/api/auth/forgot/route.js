@@ -1,7 +1,7 @@
 // app/api/auth/forgot/route.js
 import { v4 as uuidv4 } from "uuid";
-import { sendResetEmail } from "@/lib/email";
 import { prisma } from "../../../../lib/prisma";
+import { sendResetEmail } from "../../../../lib/email";
 
 export async function POST(req) {
     try {
